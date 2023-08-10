@@ -1,0 +1,7 @@
+[
+ {
+  "path": "/packages/iot/zephyr_polling", 
+  "ver": "latest", 
+  "name": "ZEPHYR_POLLING"
+ }
+]
