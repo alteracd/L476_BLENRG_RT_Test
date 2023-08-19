@@ -129,20 +129,6 @@
 
 /* IoT Cloud */
 
-#define PKG_USING_ZEPHYR_POLLING
-#define PKG_USING_ZEPHYR_POLLING_LATEST_VERSION
-#define PKG_ZEPHYR_POLLING_CHIPSET_COMMON
-#define PKG_ZEPHYR_POLLING_CHIPSET "common"
-#define PKG_ZEPHYR_POLLING_EXAMPLE_BEACON
-#define PKG_ZEPHYR_POLLING_EXAMPLE "beacon"
-#define PKG_ZEPHYR_POLLING_PORT_RTTHREAD_UART
-#define PKG_ZEPHYR_POLLING_PORTING "rtthread_uart"
-
-/* HCI Transport Set */
-
-#define PKG_ZEPHYR_POLLING_HCI_USING_UART
-#define PKG_ZEPHYR_POLLING_HCI_UART_INDEX 1
-#define PKG_ZEPHYR_POLLING_HCI_UART_BAUDRATE 115200
 
 /* security packages */
 
@@ -161,6 +147,9 @@
 
 
 /* u8g2: a monochrome graphic library */
+
+
+/* PainterEngine: A cross-platform graphics application framework written in C language */
 
 
 /* tools packages */
@@ -182,19 +171,11 @@
 
 /* peripheral libraries and drivers */
 
-/* sensors drivers */
-
-
-/* touch drivers */
-
 
 /* Kendryte SDK */
 
 
 /* AI packages */
-
-
-/* Signal Processing and Control Algorithm Packages */
 
 
 /* miscellaneous packages */
@@ -210,7 +191,7 @@
 /* Arduino libraries */
 
 
-/* Projects and Demos */
+/* Projects */
 
 
 /* Sensors */
@@ -229,12 +210,10 @@
 
 /* Communication */
 
-
 /* Device Control */
 
 
 /* Other */
-
 
 /* Signal IO */
 

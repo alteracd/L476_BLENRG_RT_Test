@@ -68,10 +68,10 @@ struct hci_command_hdr{
 #define HCI_HDR_SIZE 1
 
 /* GET PIN  -----------------------------------------------*/
-#define HCI_TL_SPI_EXTI_PIN     GET_PIN(A, 0)
+//#define HCI_TL_SPI_EXTI_PIN     GET_PIN(A, 0)
 #define HCI_TL_SPI_IRQ_PIN      GET_PIN(A, 0)
 #define HCI_TL_SPI_CS_PIN       GET_PIN(A, 1)
-#define HCI_TL_RST_PIN          GET_PIN(A, 8)
+//#define HCI_TL_RST_PIN          GET_PIN(A, 8)
 
 /* HAL SPI && PIN -----------------------------------------------*/
 #define HCI_HAL_SPI_EXTI_PORT  GPIOA

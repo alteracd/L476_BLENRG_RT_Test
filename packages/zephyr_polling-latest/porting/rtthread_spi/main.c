@@ -33,11 +33,11 @@ int bt_init_hci_driver(void)
 {
     rt_kprintf("bt_init_hci_driver \r\n");
 
-    HCI_TL_SPI_Init(NULL); // RT SPI ï¿½ï¿½Ê¼ï¿½ï¿½
-    HCI_HAL_SPI_Init(NULL); //halï¿½ï¿½SPIï¿½ï¿½Ê¼ï¿½ï¿½
-    HCI_TL_SPI_Reset(); //ï¿½Ü½ï¿½ reset
+//    HCI_TL_SPI_Init(NULL); // RT SPI ³õÊ¼»¯
+//    HCI_HAL_SPI_Init(NULL); //hal¿âSPI³õÊ¼»¯
+//    HCI_TL_SPI_Reset(); //¹Ü½Å reset
 
-    // send_cmd(0x03, 0x003, 0, 0x00); //reset ï¿½ï¿½ï¿½ï¿½
+    // send_cmd(0x03, 0x003, 0, 0x00); //reset ·¢ËÍ
 
     // uint16_t size = 16;
     // uint8_t dataBuff[16];

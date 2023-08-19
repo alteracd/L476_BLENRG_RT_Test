@@ -34,27 +34,27 @@ int32_t IsDataAvailable(void);
 int32_t BSP_SPI1_SendRecv(uint8_t *pTxData, uint8_t *pRxData, uint16_t Length);
 
 /******************** IO Operation and BUS services ***************************/
-/**
- * @brief  Enable SPI IRQ.
- * @param  None
- * @retval None
- */
-static void HCI_TL_SPI_Enable_IRQ(void)
-{
-  //HAL_NVIC_EnableIRQ(HCI_TL_SPI_EXTI_IRQn);
-  rt_pin_irq_enable(HCI_TL_SPI_EXTI_PIN, PIN_IRQ_ENABLE);
-}
+///**
+// * @brief  Enable SPI IRQ.
+// * @param  None
+// * @retval None
+// */
+//static void HCI_TL_SPI_Enable_IRQ(void)
+//{
+//  //HAL_NVIC_EnableIRQ(HCI_TL_SPI_EXTI_IRQn);
+//  rt_pin_irq_enable(HCI_TL_SPI_EXTI_PIN, PIN_IRQ_ENABLE);
+//}
 
-/**
- * @brief  Disable SPI IRQ.
- * @param  None
- * @retval None
- */
-static void HCI_TL_SPI_Disable_IRQ(void)
-{
-  //HAL_NVIC_DisableIRQ(HCI_TL_SPI_EXTI_IRQn);
-  rt_pin_irq_enable(HCI_TL_SPI_EXTI_PIN, PIN_IRQ_DISABLE);
-}
+///**
+// * @brief  Disable SPI IRQ.
+// * @param  None
+// * @retval None
+// */
+//static void HCI_TL_SPI_Disable_IRQ(void)
+//{
+//  //HAL_NVIC_DisableIRQ(HCI_TL_SPI_EXTI_IRQn);
+//  rt_pin_irq_enable(HCI_TL_SPI_EXTI_PIN, PIN_IRQ_DISABLE);
+//}
 
 /**
  * @brief  Initializes the peripherals communication with the BlueNRG
@@ -70,10 +70,10 @@ static void HCI_TL_SPI_Disable_IRQ(void)
 int32_t HCI_TL_SPI_Init(void* pConf)
 {
     /******PIN******/
-    rt_pin_mode(HCI_TL_SPI_EXTI_PIN, PIN_MODE_INPUT); // IRQ input
-    rt_pin_mode(HCI_TL_RST_PIN, PIN_MODE_OUTPUT); // reset output
+    rt_pin_mode(HCI_TL_SPI_IRQ_PIN, PIN_MODE_INPUT); // IRQ input
+//    rt_pin_mode(HCI_TL_RST_PIN, PIN_MODE_OUTPUT); // reset output
     rt_pin_mode(HCI_TL_SPI_CS_PIN, PIN_MODE_OUTPUT); // cs output
-//    if (RT_EOK != rt_pin_attach_irq(HCI_TL_SPI_EXTI_PIN,  PIN_IRQ_MODE_RISING, HCI_TL_IRQ, RT_NULL)) // IRQFUNC
+//    if (RT_EOK != rt_pin_attach_irq(HCI_TL_SPI_IRQ_PIN,  PIN_IRQ_MODE_RISING, HCI_TL_IRQ, RT_NULL)) // IRQFUNC
 //    {
 //        rt_kprintf("Failed to attach irq.");
 //        return -RT_ERROR;
@@ -88,9 +88,9 @@ int32_t HCI_TL_SPI_Init(void* pConf)
     }
     if (RT_EOK != rt_spi_bus_attach_device(ble_spi, "spi10", "spi1", RT_NULL))
     {
-//        rt_kprintf("Failed to attach the spi device.");
-        return RT_EOK;
-//        return -RT_ERROR;
+        rt_kprintf("Failed to attach the spi device.");
+//        return RT_EOK;
+        return -RT_ERROR;
     }
 
     /* spi设备配置  */
@@ -106,24 +106,24 @@ int32_t HCI_TL_SPI_Init(void* pConf)
     return RT_EOK;
 }
 
-/**
- * @brief Reset BlueNRG module.
- *
- * @param  None
- * @retval int32_t 0
- */
-int32_t HCI_TL_SPI_Reset(void)
-{
-  // Deselect CS PIN for BlueNRG to avoid spurious commands
-  rt_pin_write(HCI_TL_SPI_CS_PIN, PIN_HIGH);
-
-  rt_pin_write(HCI_TL_RST_PIN, PIN_LOW);
-  rt_thread_mdelay(5);
-
-  rt_pin_write(HCI_TL_RST_PIN, PIN_HIGH);
-  rt_thread_mdelay(5);
-  return RT_EOK;
-}
+///**
+// * @brief Reset BlueNRG module.
+// *
+// * @param  None
+// * @retval int32_t 0
+// */
+//int32_t HCI_TL_SPI_Reset(void)
+//{
+//  // Deselect CS PIN for BlueNRG to avoid spurious commands
+//  rt_pin_write(HCI_TL_SPI_CS_PIN, PIN_HIGH);
+//
+//  rt_pin_write(HCI_TL_RST_PIN, PIN_LOW);
+//  rt_thread_mdelay(5);
+//
+//  rt_pin_write(HCI_TL_RST_PIN, PIN_HIGH);
+//  rt_thread_mdelay(5);
+//  return RT_EOK;
+//}
 
 
 /**
@@ -263,8 +263,8 @@ int32_t HCI_TL_SPI_Send(uint8_t* buffer, uint16_t size)
     }
 
     /* Read header */
-//    BSP_SPI1_SendRecv(header_master, header_slave, HEADER_SIZE);
-//    rt_spi_send_then_recv(ble_spi, &header_master, HEADER_SIZE, &header_slave, HEADER_SIZE); //RTAPI
+//    BSP_SPI_SendRecv(header_master, header_slave, HEADER_SIZE);
+//    rt_spi_send_then_recv(ble_spi, header_master, HEADER_SIZE, header_slave, HEADER_SIZE); //RTAPI
     HAL_SPI_TransmitReceive(&hspi1, header_master, header_slave, HEADER_SIZE, BUS_SPI1_POLL_TIMEOUT); //hal
 
     rt_kprintf("Send header size: %d buffer: %02x", HEADER_SIZE, header_slave[0]);
@@ -279,7 +279,7 @@ int32_t HCI_TL_SPI_Send(uint8_t* buffer, uint16_t size)
     if(rx_bytes >= size)
     {
       /* Buffer is big enough */
-//      BSP_SPI1_SendRecv(buffer, read_char_buf, size);
+//      BSP_SPI_SendRecv(buffer, read_char_buf, size);
 //      rt_spi_send_then_recv(ble_spi, &buffer, size, &read_char_buf, size); //RTAPI
       HAL_SPI_TransmitReceive(&hspi1, buffer, read_char_buf, size, BUS_SPI1_POLL_TIMEOUT); //hal
 
@@ -335,7 +335,7 @@ int32_t HCI_TL_SPI_Send(uint8_t* buffer, uint16_t size)
  */
 int32_t IsDataAvailable(void)
 {
-  return (rt_pin_read(HCI_TL_SPI_EXTI_PIN) == PIN_HIGH);
+  return (rt_pin_read(HCI_TL_SPI_IRQ_PIN) == PIN_HIGH);
 }
 
 /**
@@ -518,7 +518,7 @@ static int hci_driver_h4_open(void)
 {
     HCI_TL_SPI_Init(NULL); // RT SPI 初始化
     HCI_HAL_SPI_Init(NULL); //hal库SPI初始化
-    HCI_TL_SPI_Reset(); //管脚 reset
+//    HCI_TL_SPI_Reset(); //管脚 reset
 
     printk("hci_driver_h4_open, SPI_config\n");
 
@@ -542,34 +542,33 @@ int switch_net_buf_type(uint8_t type)
         return H4_CMD;
     default:
         printk("Unknown buffer type");
-        while(1);
     }
     return 0;
 }
 static int hci_driver_h4_send(struct net_buf *buf)
 {
     uint8_t type = bt_buf_get_type(buf);
-//    net_buf_push_u8(buf, type);
+//    net_buf_push_u8(buf, type); //前面没有空间了 插入不了了
 //    uint8_t* data = buf->data;
     uint8_t len = buf->len;
     printk("hci_driver_h4_send, type: %d\n", type);
 
-    if(len >= 255)
+    if(len >= MAX_BUFFER_SIZE)
     {
-        while(1);
+//        while(1);s
+        return -1;
     }
 
-    uint8_t data[255];
+    uint8_t data[MAX_BUFFER_SIZE];
     data[0] = switch_net_buf_type(type);
-    memcpy(data + 1, buf->data, len);
+    memcpy(data + 1, buf->data, len); //data[0]为类型  拷贝到data[1]之后
     printk("hci_driver_h4_send, len: %d, data: %02x:%02x:%02x:%02x:%02x:%02x\n", len, data[0], data[1], data[2], data[3], data[4], data[5]);
 
-    if (HCI_TL_SPI_Send(data, len + 1) < 0) {
+    if (HCI_TL_SPI_Send(data, len + 1) < 0) { // type +1
         return -1;
     }
     net_buf_unref(buf);
     return 0;
-//    return rt_device_write(h4_uart, 0, buf, len);
 }
 
 static int hci_driver_h4_recv(uint8_t *buf, uint16_t len)
@@ -580,12 +579,12 @@ static int hci_driver_h4_recv(uint8_t *buf, uint16_t len)
 
 void hci_driver_h4_init_loop(void)
 {
-    uint8_t data[255];
-    uint8_t len = 255;
-    int ret = HCI_TL_SPI_Receive(data, len);
-    if(ret > 0 && (data[0] != 0))
+    uint8_t data[MAX_BUFFER_SIZE];
+    uint8_t len = MAX_BUFFER_SIZE;
+    int ret = HCI_TL_SPI_Receive(data, len); //ret 接收长度
+    if(ret > 0 && (data[0] != 0)) // 类型不为0
     {
-        printk("hci_driver_h4_init_loop, ret: %d, data: %02x:%02x:%02x:%02x:%02x:%02x\n", ret, data[0], data[1], data[2], data[3], data[4], data[5]);
+        printk("hci_driver_h4_init_loop, ret: %d, data: %02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x\n", ret, data[0], data[1], data[2], data[3], data[4], data[5],data[6],data[7]);
 
         struct net_buf *buf;
         switch(data[0])
