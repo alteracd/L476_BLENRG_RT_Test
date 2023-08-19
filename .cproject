@@ -72,7 +72,7 @@
                   <listOptionValue builtIn="false" value="&quot;${workspace_loc://${ProjName}//libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Inc}&quot;" />
                   <listOptionValue builtIn="false" value="&quot;${workspace_loc://${ProjName}//packages/zephyr_polling-latest/chipset/common}&quot;" />
                   <listOptionValue builtIn="false" value="&quot;${workspace_loc://${ProjName}//packages/zephyr_polling-latest/chipset}&quot;" />
-                  <listOptionValue builtIn="false" value="&quot;${workspace_loc://${ProjName}//packages/zephyr_polling-latest/example/beacon}&quot;" />
+                  <listOptionValue builtIn="false" value="&quot;${workspace_loc://${ProjName}//packages/zephyr_polling-latest/example/peripheral_hr}&quot;" />
                   <listOptionValue builtIn="false" value="&quot;${workspace_loc://${ProjName}//packages/zephyr_polling-latest/platform/rtthread}&quot;" />
                   <listOptionValue builtIn="false" value="&quot;${workspace_loc://${ProjName}//packages/zephyr_polling-latest/platform}&quot;" />
                   <listOptionValue builtIn="false" value="&quot;${workspace_loc://${ProjName}//packages/zephyr_polling-latest/porting/rtthread_uart}&quot;" />
@@ -171,7 +171,7 @@
                   <listOptionValue builtIn="false" value="&quot;${workspace_loc://${ProjName}//libraries/STM32L4xx_HAL/STM32L4xx_HAL_Driver/Inc}&quot;" />
                   <listOptionValue builtIn="false" value="&quot;${workspace_loc://${ProjName}//packages/zephyr_polling-latest/chipset/common}&quot;" />
                   <listOptionValue builtIn="false" value="&quot;${workspace_loc://${ProjName}//packages/zephyr_polling-latest/chipset}&quot;" />
-                  <listOptionValue builtIn="false" value="&quot;${workspace_loc://${ProjName}//packages/zephyr_polling-latest/example/beacon}&quot;" />
+                  <listOptionValue builtIn="false" value="&quot;${workspace_loc://${ProjName}//packages/zephyr_polling-latest/example/peripheral_hr}&quot;" />
                   <listOptionValue builtIn="false" value="&quot;${workspace_loc://${ProjName}//packages/zephyr_polling-latest/platform/rtthread}&quot;" />
                   <listOptionValue builtIn="false" value="&quot;${workspace_loc://${ProjName}//packages/zephyr_polling-latest/platform}&quot;" />
                   <listOptionValue builtIn="false" value="&quot;${workspace_loc://${ProjName}//packages/zephyr_polling-latest/porting/rtthread_uart}&quot;" />

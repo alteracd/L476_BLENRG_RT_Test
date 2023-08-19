@@ -42,7 +42,6 @@ static int bluenrg2_config_without_host()
     net_buf_add_mem(buf, cmd_buffer, sizeof(cmd_buffer));
 
     return bt_hci_cmd_send(opcode, buf);
-
 }
 
 #define BLE_MAC_ADDR                                                                               \
@@ -229,7 +228,7 @@ void event_process(uint8_t event, struct net_buf *buf)
 {
     if(state == STATE_POLLING_PREPARING) // boot do nothing
     {
-        if (event == BT_HCI_EVT_CMD_COMPLETE)  //
+        if (event == BT_HCI_EVT_CMD_COMPLETE)  //only complete
         {
             printk("event_process, step: %d\n", step);
 
@@ -269,7 +268,6 @@ static const struct bt_hci_chipset_driver chipset_drv = {
 const struct bt_hci_chipset_driver *bt_hci_chipset_impl_local_instance(void)
 {
     return &chipset_drv;
-//    return NULL;
 }
 
 // For test, you can set your customor setting here.
