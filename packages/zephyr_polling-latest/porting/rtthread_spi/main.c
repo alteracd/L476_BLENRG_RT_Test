@@ -33,23 +33,6 @@ int bt_init_hci_driver(void)
 {
     rt_kprintf("bt_init_hci_driver \r\n");
 
-//    HCI_TL_SPI_Init(NULL); // RT SPI ≥ı ºªØ
-//    HCI_HAL_SPI_Init(NULL); //halø‚SPI≥ı ºªØ
-//    HCI_TL_SPI_Reset(); //π‹Ω≈ reset
-
-    // send_cmd(0x03, 0x003, 0, 0x00); //reset ∑¢ÀÕ
-
-    // uint16_t size = 16;
-    // uint8_t dataBuff[16];
-    // for (int i = 0; i < 4; ++i) {
-    //     int dataLen = HCI_TL_SPI_Receive(dataBuff, size); // ÔøΩÔøΩÔøΩÔøΩ
-    //     rt_kprintf("Recv size: %d buffer: %02x", dataLen, dataBuff[0]);
-    //     for (int i = 1; i < dataLen; ++i) {
-    //         rt_kprintf("%02x", dataBuff[i]);
-    //     }
-    //     rt_kprintf("\r\n");
-    // }
-
     hci_driver_h4_init();
 
     return 0;

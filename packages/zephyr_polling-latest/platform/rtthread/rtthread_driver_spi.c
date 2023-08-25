@@ -143,15 +143,12 @@ int32_t HCI_TL_SPI_Receive(uint8_t* buffer, uint16_t size)
   uint8_t header_master[HEADER_SIZE] = {0x0b, 0x00, 0x00, 0x00, 0x00};
   uint8_t header_slave[HEADER_SIZE];
 
-//  HCI_TL_SPI_Disable_IRQ();
-
   /* CS reset */
   rt_pin_write(HCI_TL_SPI_CS_PIN, PIN_LOW);
 
   /* Read the header */
-//  BSP_SPI1_SendRecv(header_master, header_slave, HEADER_SIZE);
-//  rt_spi_send_then_recv(ble_spi, &header_master, HEADER_SIZE, &header_slave, HEADER_SIZE);
-  HAL_SPI_TransmitReceive(&hspi1, header_master, header_slave, HEADER_SIZE, BUS_SPI1_POLL_TIMEOUT);
+  rt_spi_transfer(ble_spi, &header_master, &header_slave, HEADER_SIZE); //RTAPI
+//  HAL_SPI_TransmitReceive(&hspi1, header_master, header_slave, HEADER_SIZE, BUS_SPI1_POLL_TIMEOUT);
 
   rt_kprintf("Recv header size: %d buffer: %02x", HEADER_SIZE, header_slave[0]);
   for (int i = 1; i < HEADER_SIZE; ++i) {
@@ -161,8 +158,6 @@ int32_t HCI_TL_SPI_Receive(uint8_t* buffer, uint16_t size)
 
   /* device is ready */
   byte_count = (header_slave[4] << 8)| header_slave[3];
-//  byte_count = (0x0 << 8)| 0x7;
-//  rt_kprintf("byte_count %d \r\n", byte_count);
 
   if(byte_count > 0)
   {
@@ -175,9 +170,8 @@ int32_t HCI_TL_SPI_Receive(uint8_t* buffer, uint16_t size)
 
     for(len = 0; len < byte_count; len++)
     {
-//      BSP_SPI1_SendRecv(&char_00, (uint8_t*)&read_char, 1);
-//      rt_spi_send_then_recv(ble_spi, &char_00, 1, (uint8_t*)&read_char, 1);
-      HAL_SPI_TransmitReceive(&hspi1, &char_00, (uint8_t*)&read_char, 1, BUS_SPI1_POLL_TIMEOUT);
+      rt_spi_transfer(ble_spi, &char_00, (uint8_t*)&read_char, 1);
+//      HAL_SPI_TransmitReceive(&hspi1, &char_00, (uint8_t*)&read_char, 1, BUS_SPI1_POLL_TIMEOUT);
       buffer[len] = read_char;
     }
   }
@@ -193,16 +187,9 @@ int32_t HCI_TL_SPI_Receive(uint8_t* buffer, uint16_t size)
       break;
     }
   }
-//  HCI_TL_SPI_Enable_IRQ();
 
   /* Release CS line */
   rt_pin_write(HCI_TL_SPI_CS_PIN, PIN_HIGH);
-
-//  rt_kprintf("Recv size: %d buffer: %02x", size, buffer[0]);
-//  for (int i = 1; i < size; ++i) {
-//      rt_kprintf("%02x",buffer[i]);
-//  }
-//  rt_kprintf("\r\n");
 
   return len;
 }
@@ -231,7 +218,6 @@ int32_t HCI_TL_SPI_Send(uint8_t* buffer, uint16_t size)
   static uint8_t read_char_buf[MAX_BUFFER_SIZE];
   uint32_t tickstart = rt_tick_get();
 
-//  HCI_TL_SPI_Disable_IRQ();
 
   do
   {
@@ -263,9 +249,8 @@ int32_t HCI_TL_SPI_Send(uint8_t* buffer, uint16_t size)
     }
 
     /* Read header */
-//    BSP_SPI_SendRecv(header_master, header_slave, HEADER_SIZE);
-//    rt_spi_send_then_recv(ble_spi, header_master, HEADER_SIZE, header_slave, HEADER_SIZE); //RTAPI
-    HAL_SPI_TransmitReceive(&hspi1, header_master, header_slave, HEADER_SIZE, BUS_SPI1_POLL_TIMEOUT); //hal
+    rt_spi_transfer(ble_spi, &header_master, &header_slave, HEADER_SIZE); //RTAPI
+//    HAL_SPI_TransmitReceive(&hspi1, header_master, header_slave, HEADER_SIZE, BUS_SPI1_POLL_TIMEOUT); //hal
 
     rt_kprintf("Send header size: %d buffer: %02x", HEADER_SIZE, header_slave[0]);
     for (int i = 1; i < HEADER_SIZE; ++i) {
@@ -274,14 +259,12 @@ int32_t HCI_TL_SPI_Send(uint8_t* buffer, uint16_t size)
     rt_kprintf("\r\n");
 
     rx_bytes = (((uint16_t)header_slave[2])<<8) | ((uint16_t)header_slave[1]);
-//    rx_bytes = (((uint16_t) 0x01 )<<8) | ((uint16_t) 0x09);
 
     if(rx_bytes >= size)
     {
       /* Buffer is big enough */
-//      BSP_SPI_SendRecv(buffer, read_char_buf, size);
-//      rt_spi_send_then_recv(ble_spi, &buffer, size, &read_char_buf, size); //RTAPI
-      HAL_SPI_TransmitReceive(&hspi1, buffer, read_char_buf, size, BUS_SPI1_POLL_TIMEOUT); //hal
+      rt_spi_transfer(ble_spi, buffer, &read_char_buf, size); //RTAPI
+//      HAL_SPI_TransmitReceive(&hspi1, buffer, read_char_buf, size, BUS_SPI1_POLL_TIMEOUT); //hal
 
 //      rt_kprintf("Recv sd size: %d buffer: %02x", size, read_char_buf[0]);
 //      for (int i = 1; i < size; ++i) {
@@ -317,7 +300,6 @@ int32_t HCI_TL_SPI_Send(uint8_t* buffer, uint16_t size)
       break;
     }
   }
-//  HCI_TL_SPI_Enable_IRQ();
 
 //  rt_kprintf("SendRecv Rcv: %02x%02x%02x%02x%02x%02x%02x%02x%02x\r\n", read_char_buf[0], read_char_buf[1], read_char_buf[2],
 //          read_char_buf[3], read_char_buf[4], read_char_buf[5], read_char_buf[6], read_char_buf[7], read_char_buf[8]);
@@ -338,23 +320,6 @@ int32_t IsDataAvailable(void)
   return (rt_pin_read(HCI_TL_SPI_IRQ_PIN) == PIN_HIGH);
 }
 
-/**
-  * @brief  Send and Receive data to/from SPI BUS (Full duplex)
-  * @param  pData: Pointer to data buffer to send/receive
-  * @param  Length: Length of data in byte
-  * @retval BSP status
-  */
-int32_t BSP_SPI1_SendRecv(uint8_t *pTxData, uint8_t *pRxData, uint16_t Length)
-{
-  int32_t ret = RT_EOK;
-
-  if (RT_EOK != rt_spi_send_then_recv(ble_spi, pTxData, Length, pRxData, Length)){
-      rt_kprintf("Failed to send.");
-      ret = - RT_ERROR;
-  }
-  return ret;
-}
-
 void send_cmd(uint16_t ogf, uint16_t ocf, uint8_t plen, void *param)
 {
   uint8_t payload[HCI_MAX_PAYLOAD_SIZE];
@@ -367,7 +332,6 @@ void send_cmd(uint16_t ogf, uint16_t ocf, uint8_t plen, void *param)
   memcpy(payload + 1, &hc, sizeof(hc));
   memcpy(payload + HCI_HDR_SIZE + HCI_COMMAND_HDR_SIZE, param, plen);
   //payload: HCI_COMMAND_PKT(8)  opcode(16) plen(8) param(plen)
-  //HCI_TL_SPI_Send(payload, HCI_HDR_SIZE + HCI_COMMAND_HDR_SIZE + plen)
 
   HCI_TL_SPI_Send(payload, HCI_HDR_SIZE + HCI_COMMAND_HDR_SIZE + plen);
 }
@@ -517,7 +481,7 @@ int32_t HCI_HAL_SPI_Init(void* pConf)
 static int hci_driver_h4_open(void)
 {
     HCI_TL_SPI_Init(NULL); // RT SPI 初始化
-    HCI_HAL_SPI_Init(NULL); //hal库SPI初始化
+//    HCI_HAL_SPI_Init(NULL); //hal库SPI初始化
 //    HCI_TL_SPI_Reset(); //管脚 reset
 
     printk("hci_driver_h4_open, SPI_config\n");
@@ -574,7 +538,6 @@ static int hci_driver_h4_send(struct net_buf *buf)
 static int hci_driver_h4_recv(uint8_t *buf, uint16_t len)
 {
     return HCI_TL_SPI_Receive(buf, len);
-//    return rt_device_read(h4_uart, 0, buf, len);
 }
 
 void hci_driver_h4_init_loop(void)
@@ -605,15 +568,6 @@ void hci_driver_h4_init_loop(void)
             bt_recv(buf);
         }
     }
-//    if (k_fifo_is_empty(&rx_queue))
-//    {
-//        return;
-//    }
-//    struct net_buf *buf = pop_rx_queue();
-//    if (buf)
-//    {
-//        bt_recv(buf);
-//    }
 }
 
 static const struct bt_hci_driver drv = {

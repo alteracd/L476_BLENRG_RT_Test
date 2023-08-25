@@ -119,7 +119,7 @@
 //int32_t HCI_TL_SPI_Send    (uint8_t* buffer, uint16_t size);
 //int32_t HCI_TL_SPI_Reset   (void);
 //void send_cmd(uint16_t ogf, uint16_t ocf, uint8_t plen, void *param);
-//
+//int32_t HCI_HAL_SPI_Init(void* pConf);
 //
 ////int32_t BSP_SPI1_SendRecv(uint8_t *pTxData, uint8_t *pRxData, uint16_t Length);
 //

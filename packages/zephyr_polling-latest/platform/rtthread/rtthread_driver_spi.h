@@ -115,7 +115,6 @@ struct hci_command_hdr{
 
 /* Exported Functions --------------------------------------------------------*/
 int32_t HCI_TL_SPI_Init    (void* pConf);
-//int32_t HCI_TL_SPI_DeInit  (void);
 int32_t HCI_TL_SPI_Receive (uint8_t* buffer, uint16_t size);
 int32_t HCI_TL_SPI_Send    (uint8_t* buffer, uint16_t size);
 int32_t HCI_TL_SPI_Reset   (void);

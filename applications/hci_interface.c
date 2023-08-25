@@ -68,11 +68,11 @@
 //    rt_pin_mode(HCI_TL_SPI_EXTI_PIN, PIN_MODE_INPUT); // IRQ input
 //    rt_pin_mode(HCI_TL_RST_PIN, PIN_MODE_OUTPUT); // reset output
 //    rt_pin_mode(HCI_TL_SPI_CS_PIN, PIN_MODE_OUTPUT); // cs output
-//    if (RT_EOK != rt_pin_attach_irq(HCI_TL_SPI_EXTI_PIN,  PIN_IRQ_MODE_RISING, HCI_TL_IRQ, RT_NULL)) // IRQFUNC
-//    {
-//        rt_kprintf("Failed to attach irq.");
-//        return -RT_ERROR;
-//    }
+////    if (RT_EOK != rt_pin_attach_irq(HCI_TL_SPI_EXTI_PIN,  PIN_IRQ_MODE_RISING, HCI_TL_IRQ, RT_NULL)) // IRQFUNC
+////    {
+////        rt_kprintf("Failed to attach irq.");
+////        return -RT_ERROR;
+////    }
 //
 //    /*******SPI******/
 //    ble_spi = (struct rt_spi_device *)rt_malloc(sizeof(struct rt_spi_device));
@@ -144,8 +144,8 @@
 //
 //  /* Read the header */
 ////  BSP_SPI1_SendRecv(header_master, header_slave, HEADER_SIZE);
-////  rt_spi_send_then_recv(ble_spi, &header_master, HEADER_SIZE, &header_slave, HEADER_SIZE);
-//  HAL_SPI_TransmitReceive(&hspi1, header_master, header_slave, HEADER_SIZE, BUS_SPI1_POLL_TIMEOUT);
+//  rt_spi_transfer(ble_spi, &header_master, &header_slave, HEADER_SIZE); //RTAPI
+////  HAL_SPI_TransmitReceive(&hspi1, header_master, header_slave, HEADER_SIZE, BUS_SPI1_POLL_TIMEOUT);
 //
 //  rt_kprintf("Recv header size: %d buffer: %02x", HEADER_SIZE, header_slave[0]);
 //  for (int i = 1; i < HEADER_SIZE; ++i) {
@@ -170,8 +170,8 @@
 //    for(len = 0; len < byte_count; len++)
 //    {
 ////      BSP_SPI1_SendRecv(&char_00, (uint8_t*)&read_char, 1);
-////      rt_spi_send_then_recv(ble_spi, &char_00, 1, (uint8_t*)&read_char, 1);
-//      HAL_SPI_TransmitReceive(&hspi1, &char_00, (uint8_t*)&read_char, 1, BUS_SPI1_POLL_TIMEOUT);
+//      rt_spi_transfer(ble_spi, &char_00, (uint8_t*)&read_char, 1);
+////      HAL_SPI_TransmitReceive(&hspi1, &char_00, (uint8_t*)&read_char, 1, BUS_SPI1_POLL_TIMEOUT);
 //      buffer[len] = read_char;
 //    }
 //  }
@@ -259,7 +259,7 @@
 //
 //    /* Read header */
 ////    BSP_SPI1_SendRecv(header_master, header_slave, HEADER_SIZE);
-////    rt_spi_send_then_recv(ble_spi, &header_master, HEADER_SIZE, &header_slave, HEADER_SIZE); //RTAPI
+////    rt_spi_transfer(ble_spi, &header_master, &header_slave, HEADER_SIZE); //RTAPI
 //    HAL_SPI_TransmitReceive(&hspi1, header_master, header_slave, HEADER_SIZE, BUS_SPI1_POLL_TIMEOUT); //hal
 //
 //    rt_kprintf("Send header size: %d buffer: %02x", HEADER_SIZE, header_slave[0]);
@@ -275,7 +275,7 @@
 //    {
 //      /* Buffer is big enough */
 ////      BSP_SPI1_SendRecv(buffer, read_char_buf, size);
-////      rt_spi_send_then_recv(ble_spi, &buffer, size, &read_char_buf, size); //RTAPI
+////        rt_spi_transfer(ble_spi, buffer, read_char_buf, size); //RTAPI
 //      HAL_SPI_TransmitReceive(&hspi1, buffer, read_char_buf, size, BUS_SPI1_POLL_TIMEOUT); //hal
 //
 ////      rt_kprintf("Recv sd size: %d buffer: %02x", size, read_char_buf[0]);
