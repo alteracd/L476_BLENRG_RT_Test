@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2006-2021, RT-Thread Development Team
- *
- * SPDX-License-Identifier: Apache-2.0
- *
- * Change Logs:
- * Date           Author       Notes
- * 2023-08-18     YTR       the first version
- */
 #include <errno.h>
 
 #include "chipset_bluenrg2.h"
@@ -280,4 +271,13 @@ static const bt_uart_interface_t uart_interface = {115200, 8, 1, 0, true};
 const bt_uart_interface_t *bt_chipset_get_uart_interface(void)
 {
     return &uart_interface;
+}
+
+// For test, you can set your customor setting here.
+static const bt_BlueNRG_SPI_interface_t spi_interface = {1, 0, 1 * 1000 * 1000, 8, 1, 0, 0, 1};
+//for Nucleo-L476RG BLUENRG2:  {PA1(1), PA0(0), 1MHz, 8bits, MSB, Master, CPOL = 0, CPHA = 1};
+
+const bt_BlueNRG_SPI_interface_t *bt_BlueNRG_get_SPI_interface(void)
+{
+    return &spi_interface;
 }

@@ -1,15 +1,8 @@
-/*
- * Copyright (c) 2006-2021, RT-Thread Development Team
- *
- * SPDX-License-Identifier: Apache-2.0
- *
- * Change Logs:
- * Date           Author       Notes
- * 2023-08-09     YTR       the first version
- */
 
 #ifndef APPLICATIONS_HCI_INTERFACE_H_
 #define APPLICATIONS_HCI_INTERFACE_H_
+
+#include "chipset_interface.h"
 
 /* SPI Trans Defines -------------------------------------------------------------------*/
 #define HEADER_SIZE       5U
@@ -30,13 +23,12 @@
 #define HCI_TL_SPI_IRQ_PIN      GET_PIN(A, 0)  /* IRQ PIN OF BLUENRG*/
 #define HCI_TL_SPI_CS_PIN       GET_PIN(A, 1)  /* SPI CS PIN */
 
-/* SPI  -----------------------------------------------*/
-#define SPI_DEVICE_NAME     "spi10"   /* SPI Éè±¸Ãû³Æ */
+#define NAME_SIZE       10U
 
 /* Exported Functions --------------------------------------------------------*/
 int32_t HCI_TL_SPI_Init    (void* pConf);
 int32_t HCI_TL_SPI_Receive (uint8_t* buffer, uint16_t size);
 int32_t HCI_TL_SPI_Send    (uint8_t* buffer, uint16_t size);
-void hci_driver_init(void);
+int hci_driver_init(bt_BlueNRG_SPI_interface_t *, int, int);
 
 #endif /* PACKAGES_ZEPHYR_POLLING_LATEST_PLATFORM_RTTHREAD_RTTHREAD_DRIVER_SPI_H_ */

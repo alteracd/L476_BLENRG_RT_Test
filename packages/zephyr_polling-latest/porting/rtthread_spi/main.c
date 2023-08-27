@@ -1,12 +1,4 @@
-/*
- * Copyright (c) 2006-2021, RT-Thread Development Team
- *
- * SPDX-License-Identifier: Apache-2.0
- *
- * Change Logs:
- * Date           Author       Notes
- * 2023-08-09     YTR       the first version
- */
+
 #include <stdarg.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -33,7 +25,29 @@ int bt_init_hci_driver(void)
 {
     printk("bt_init_hci_driver \r\n");
 
-    hci_driver_init();
+    bt_BlueNRG_SPI_interface_t *p_interface = NULL;
+    uint8_t spi_num;
+    uint8_t device_num;
+
+    p_interface = (bt_BlueNRG_SPI_interface_t *)bt_BlueNRG_get_SPI_interface();
+    bt_BlueNRG_SPI_interface_t tmp = {0, 0, 0, 0, 0, 0, 0, 0};
+    tmp.cs_pin_num = p_interface->cs_pin_num;
+    tmp.irq_pin_num = p_interface->irq_pin_num;
+    tmp.rate = p_interface->rate;
+    tmp.data_width = p_interface->data_width;
+    tmp.LSB_MSB = p_interface->LSB_MSB;
+    tmp.Master_Slave = p_interface->Master_Slave;
+    tmp.CPOL = p_interface->CPOL;
+    tmp.CPHA = p_interface->CPHA;
+
+    spi_num = 1;
+    device_num = 0;
+
+    if (hci_driver_init(&tmp, device_num, spi_num) != 0)
+    {
+        printk("Error, SPI open failed.");
+        return -1;
+    }
 
     return 0;
 }

@@ -25,7 +25,7 @@
 //    bt_uart_interface_t *p_interface = NULL;
 //    uint8_t com_num;
 //
-//    p_interface = (bt_uart_interface_t *)bt_chipset_get_uart_interface();
+//    p_interface = (bt_uart_interface_t *)bt_BlueNRG_get_SPI_interface();
 //    bt_uart_interface_t tmp = {0, 0, 0, 0, 0};
 //    tmp.rate = PKG_ZEPHYR_POLLING_HCI_UART_BAUDRATE;
 //    tmp.databits = p_interface->databits;

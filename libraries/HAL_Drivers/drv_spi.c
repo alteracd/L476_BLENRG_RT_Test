@@ -156,7 +156,6 @@ static rt_err_t stm32_spi_init(struct stm32_spi *spi_drv, struct rt_spi_configur
 #else
     SPI_APB_CLOCK = HAL_RCC_GetPCLK2Freq();
 #endif
-    rt_kprintf("SPI_APB_CLOCK %d\r\n", SPI_APB_CLOCK);
     if (cfg->max_hz >= SPI_APB_CLOCK / 2)
     {
         spi_handle->Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
