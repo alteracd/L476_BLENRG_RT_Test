@@ -202,8 +202,6 @@ static int bluenrg2_gap_init()
     net_buf_add_mem(buf, cmd_buffer, sizeof(cmd_buffer));
 
     return bt_hci_cmd_send(opcode, buf);
-
-    // Service_Handle  Dev_Name_Char_Handle  Appearance_Char_Handle seems to be local variables? useless?
 }
 
 void init_work(void){
@@ -214,7 +212,7 @@ void init_work(void){
 void boot_start(void) {
     state = STATE_POLLING_BOOTING;
     // nothing to do
-    bt_hci_set_boot_ready();          //finish prepare
+    bt_hci_set_boot_ready();          //finish boot
 }
 
 void prepare_start(void) {
@@ -230,8 +228,7 @@ void event_process(uint8_t event, struct net_buf *buf)
     {
         if (event == BT_HCI_EVT_CMD_COMPLETE)  //only complete
         {
-            printk("event_process, step: %d\n", step);
-
+            printk("prepare_event_process, step: %d\n", step);
             switch (step)
             {
             case 1: //close host just now
@@ -264,7 +261,7 @@ static const struct bt_hci_chipset_driver chipset_drv = {
         init_work, boot_start, prepare_start, event_process,
 };
 
-// public API
+// public drv API
 const struct bt_hci_chipset_driver *bt_hci_chipset_impl_local_instance(void)
 {
     return &chipset_drv;
