@@ -31,17 +31,30 @@ int bt_init_hci_driver(void)
 
     p_interface = (bt_BlueNRG_SPI_interface_t *)bt_BlueNRG_get_SPI_interface();
     bt_BlueNRG_SPI_interface_t tmp = {0, 0, 0, 0, 0, 0, 0, 0};
-    tmp.cs_pin_num = p_interface->cs_pin_num;
-    tmp.irq_pin_num = p_interface->irq_pin_num;
-    tmp.rate = p_interface->rate;
-    tmp.data_width = p_interface->data_width;
+
     tmp.LSB_MSB = p_interface->LSB_MSB;
     tmp.Master_Slave = p_interface->Master_Slave;
-    tmp.CPOL = p_interface->CPOL;
-    tmp.CPHA = p_interface->CPHA;
 
-    spi_num = 1;
-    device_num = 0;
+//     tmp.cs_pin_num = p_interface->cs_pin_num;
+//     tmp.irq_pin_num = p_interface->irq_pin_num;
+//     tmp.rate = p_interface->rate;
+//     tmp.data_width = p_interface->data_width;
+//     tmp.CPOL = p_interface->CPOL;
+//     tmp.CPHA = p_interface->CPHA;
+//
+//     spi_num = 1;
+//     device_num = 0;
+
+    tmp.cs_pin_num = PKG_ZEPHYR_POLLING_HCI_SPI_CS_PIN_NUM;
+    tmp.irq_pin_num = PKG_ZEPHYR_POLLING_HCI_SPI_IRQ_PIN_NUM;
+    tmp.rate = PKG_ZEPHYR_POLLING_HCI_SPI_BAUDRATE;
+    tmp.data_width = PKG_ZEPHYR_POLLING_HCI_SPI_DATA_WIDTH;
+    tmp.CPOL = PKG_ZEPHYR_POLLING_HCI_SPI_CPOL;
+    tmp.CPHA = PKG_ZEPHYR_POLLING_HCI_SPI_CPHA;
+
+    spi_num = PKG_ZEPHYR_POLLING_HCI_SPI_BUS_INDEX;
+    device_num = PKG_ZEPHYR_POLLING_HCI_SPI_DEVICE_INDEX;
+
 
     if (hci_driver_init(&tmp, device_num, spi_num) != 0)
     {
